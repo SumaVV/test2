@@ -1,0 +1,36 @@
+
+name: Emial Trigger
+on:
+  push:
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run a one-line script
+        run: echo Hello, world!
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+  notify:
+    needs: build
+    runs-on: ubuntu-latest
+    Steps:
+       - name: Send email 
+       uses: dawidd6/action-send-mail@v4
+       with:
+        server_address:
+        server_address: smtp.gmail.com
+        server_port: 465
+        secure: true
+        username: ${{secrets.MAIL_USERNAME}}
+        password: ${{secrets.MAIL_PASSWORD}}
+        subject: Github Actions job result
+        to: obiwan@example.com,yoda@example.com
+        from: Luke Skywalker # <user@example.com>
+        body: Build job of ${{github.repository}} completed successfully!
+        ignore_cert: true
