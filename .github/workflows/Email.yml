@@ -18,6 +18,7 @@ jobs:
           echo test, and deploy your project.
   notify:
    build:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Email Trigger
