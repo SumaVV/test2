@@ -17,8 +17,8 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: sumamegur@gmail.com
-          password: "weob lskj pxkz bmyi" # Your SMTP password
+          username:  ${{secrets.EMAIL_ID}}
+          password:  ${{secrets.EMAIL_PASSKEY}}
           subject: "GitHub Actions Build Status"
           to: sumamegur@gmail.com, sumabhat993@gmail.com
           from: "GitHub Actions sumamegur@gmail.com"  # Sender email and name
@@ -26,4 +26,4 @@ jobs:
             Build completed for ${{ github.repository }}
             Workflow: ${{ github.workflow }}
             Status: ${{ job.status }}
-            please check your log
+            please check your log for more info
