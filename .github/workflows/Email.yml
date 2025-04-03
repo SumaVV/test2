@@ -18,7 +18,7 @@ jobs:
           server_address: smtp.gmail.com
           server_port: 465
           username: sumamegur@gmail.com
-          password: @Su57695769 # Your SMTP password
+          password: "@Su57695769" # Your SMTP password
           subject: "GitHub Actions Build Status"
           to: sumamegur@gmail.com, sumabhat993@gmail.com
           from: "GitHub Actions sumamegur@gmail.com"  # Sender email and name
