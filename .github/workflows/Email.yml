@@ -17,11 +17,11 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
   notify:
-    needs: build
+   build:
     runs-on: ubuntu-latest
-    Steps:
-     - name: Send email 
-       uses: dawidd6/action-send-mail@v4
+    steps:
+      - uses: dawidd6/action-send-mail@v4
+      - name: Email Trigger
        with:
         server_address: smtp.gmail.com
         server_port: 465
