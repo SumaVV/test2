@@ -26,3 +26,4 @@ jobs:
             Build completed for ${{ github.repository }}
             Workflow: ${{ github.workflow }}
             Status: ${{ job.status }}
+            please check your log
