@@ -1,69 +1,29 @@
 name: Send Email
 
 on:
-  workflow_dispatch: # Allows manual triggering of the workflow
   push:
-    inputs:
-      to:
-        description: 'Recipient email address'
-        required: true
-      subject:
-        description: 'Email subject'
-        required: true
-      body:
-        description: 'Email body'
-        required: true
+  workflow_dispatch:
+
+env:
+  GMAIL_APP_PASSWORD: ${{ secrets.EMAIL_PASSKEY }}
 
 jobs:
-  send_email:
+  send-email:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: '3.x'
+          node-version: '20'
 
-      - name: Install dependencies
-        run: pip install secure-smtplib
+      - name: Install Dependencies
+        run: |
+          npm install
 
       - name: Send Email
-        env:
-          SMTP_SERVER: smtp.gmail.com
-          SMTP_PORT: 465
-          SMTP_USERNAME: ${{secrets.EMAIL_ID}}
-          SMTP_PASSWORD: ${{secrets.EMAIL_PASSKEY}}
-          TO_EMAIL: sumamegur@gmail.com, sumabhat993@gmail.com
-          EMAIL_SUBJECT: "GitHub action test build status"
-          EMAIL_BODY: "This is the test email of gitHub. Please check log for more info"
-          FROM_EMAIL: "GitHub Actions sumamegur@gmail.com" # Optional: If you want a specific sender
         run: |
-          import smtplib
-          from email.mime.text import MIMEText
-
-          smtp_server = smtp.gmail.com
-          port = 465
-          username = ${{secrets.EMAIL_ID}}
-          password = ${{secrets.EMAIL_PASSKEY}}
-          to_email = sumamegur@gmail.com, sumabhat993@gmail.com
-          subject = "GitHub action test build status"
-          body =  "This is the test email of gitHub. Please check log for more info"
-          from_email = "GitHub Actions sumamegur@gmail.com"# Use username as sender if FROM_EMAIL is not set
-
-          msg = MIMEText(body)
-          msg['Subject'] = subject
-          msg['From'] = from_email
-          msg['To'] = to_email
-
-          try:
-              server = smtplib.SMTP_SSL(smtp_server, port)
-              server.login(username, password)
-              server.sendmail(from_email, to_email, msg.as_string())
-              print(f"Email sent successfully to {to_email}")
-          except Exception as e:
-              print(f"Error sending email: {e}")
-          finally:
-              if 'server' in locals() and server.is_connected():
-                  server.quit()
+          node .github/scripts/send-email.mjs
