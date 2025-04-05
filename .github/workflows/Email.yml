@@ -1,13 +1,22 @@
-name: Send Email on Build
+name: Send Email
 
 on:
+  workflow_dispatch: # Allows manual triggering of the workflow
   push:
-  workflow_dispatch:
+    inputs:
+      to:
+        description: 'Recipient email address'
+        required: true
+      subject:
+        description: 'Email subject'
+        required: true
+      body:
+        description: 'Email body'
+        required: true
 
 jobs:
   send_email:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -19,6 +28,7 @@ jobs:
 
       - name: Install dependencies
         run: pip install secure-smtplib
+
       - name: Send Email
         env:
           SMTP_SERVER: smtp.gmail.com
@@ -40,7 +50,13 @@ jobs:
           to_email = sumamegur@gmail.com, sumabhat993@gmail.com
           subject = "GitHub action test build status"
           body =  "This is the test email of gitHub. Please check log for more info"
-          from_email = "GitHub Actions sumamegur@gmail.com" # Use username as sender if FROM_EMAIL is not set
+          from_email = "GitHub Actions sumamegur@gmail.com"# Use username as sender if FROM_EMAIL is not set
+
+          msg = MIMEText(body)
+          msg['Subject'] = subject
+          msg['From'] = from_email
+          msg['To'] = to_email
+
           try:
               server = smtplib.SMTP_SSL(smtp_server, port)
               server.login(username, password)
