@@ -42,7 +42,7 @@ jobs:
           smtp_port = ${{ env.SMTP_PORT }}
           smtp_username = "${{ env.SMTP_USERNAME }}"
           smtp_password = "${{ env.SMTP_PASSWORD }}"
-          recipient_email = "${{ env.RECIPIENT_EMAIL }}"
+          recipient_email = "${{ env.RECIPIENT_EMAILS }}".split(",")
           sender_email = "${{ env.SENDER_EMAIL }}"
           email_subject = "${{ env.EMAIL_SUBJECT }}"
           email_body = "${{ env.EMAIL_BODY }}"
