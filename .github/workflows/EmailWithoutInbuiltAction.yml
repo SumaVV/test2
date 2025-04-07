@@ -1,0 +1,67 @@
+name: Send Email Without Dawidd6 Action
+
+on:
+  Push:
+  workflow_dispatch: # Allows manual triggering from the GitHub Actions UI
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install secure-smtplib
+
+      - name: Send Email
+        env:
+          SMTP_SERVER: smtp.gmail.com # Or your SMTP server
+          SMTP_PORT: 587 # Or your SMTP port
+          SMTP_USERNAME: sumamegur@gmail.com
+          SMTP_PASSWORD: ${{ secrets.EMAIL_PASSKEY }}
+          RECIPIENT_EMAIL: sumamegur@gmail.com,sumabhat993@gmail.com
+          SENDER_EMAIL: sumamegur@gmail.com
+          EMAIL_SUBJECT: "GitHub Action Email"
+          EMAIL_BODY: "This email was sent from a GitHub Action without using the dawidd6 action."
+
+        run: |
+          python <<EOF
+          import smtplib
+          from email.mime.text import MIMEText
+          from email.mime.multipart import MIMEMultipart
+
+          smtp_server = "${{ env.SMTP_SERVER }}"
+          smtp_port = ${{ env.SMTP_PORT }}
+          smtp_username = "${{ env.SMTP_USERNAME }}"
+          smtp_password = "${{ env.SMTP_PASSWORD }}"
+          recipient_email = "${{ env.RECIPIENT_EMAIL }}"
+          sender_email = "${{ env.SENDER_EMAIL }}"
+          email_subject = "${{ env.EMAIL_SUBJECT }}"
+          email_body = "${{ env.EMAIL_BODY }}"
+
+          msg = MIMEMultipart()
+          msg['From'] = sender_email
+          msg['To'] = recipient_email
+          msg['Subject'] = email_subject
+
+          msg.attach(MIMEText(email_body, 'plain'))
+
+          try:
+              server = smtplib.SMTP(smtp_server, smtp_port)
+              server.starttls()  # Secure the connection
+              server.login(smtp_username, smtp_password)
+              text = msg.as_string()
+              server.sendmail(sender_email, recipient_email, text)
+              server.quit()
+              print("Email sent successfully!")
+          except Exception as e:
+              print(f"Error sending email: {e}")
+          EOF
