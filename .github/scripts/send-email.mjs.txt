@@ -7,8 +7,8 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: 'sumamegur@gmail.com',
-    pass: process.env.GMAIL_APP_PASSWORD,
+    user: process.env. SMTP_USERNAME,
+    pass: process.env.SMTP_PASSWORD,
   },
 });
 
@@ -16,13 +16,13 @@ const transporter = nodemailer.createTransport({
   // Neon API logic ran here, returning values to include in the body of the email.
   let branch_id = 'little-salad-123';
   let days = 3;
-  let email = 'sumabhat993@gmail.com;
-
+  let email = process.env.RECIPIENT_EMAIL;
+	let subject= process.env.EMAIL_SUBJECT;
   try {
     await transporter.sendMail({
       from: '"Warning | DevOps" <pauliescanlon@gmail.com>',
       to: email,
-      subject: 'Stale Branch Detected!',
+      subject: subject,
     });
   } catch (error) {
     console.error(error);
