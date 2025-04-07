@@ -27,7 +27,7 @@ jobs:
           SMTP_PORT: 587 # Or your SMTP port
           SMTP_USERNAME: sumamegur@gmail.com
           SMTP_PASSWORD: ${{ secrets.EMAIL_PASSKEY }}
-          RECIPIENT_EMAIL: sumabhat993@gmail.com
+          RECIPIENT_EMAIL: sumabhat993@gmail.com; sumamegur@gmail.com
           SENDER_EMAIL: sumamegur@gmail.com
           EMAIL_SUBJECT: "GitHub Action Email"
           EMAIL_BODY: "This email was sent from a GitHub Action without using the dawidd6 action."
