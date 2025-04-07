@@ -16,7 +16,7 @@ jobs:
       - name: Install Dependencies
         run: npm install nodemailer
       - name: Send Email
-        run: node .github/scripts/send-email.mjs
+        run: node ./.github/scripts/send-email.mjs
         env:
           SMTP_USERNAME: sumamegur@gmail.com
           SMTP_PASSWORD: ${{ secrets.EMAIL_PASSKEY }}
