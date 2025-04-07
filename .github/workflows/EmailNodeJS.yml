@@ -1,28 +1,24 @@
+---
 name: Send Emmail using NodeJS
-
 on:
-  Push:
-  workflow_dispatch: 
-
+  Push: null
+  workflow_dispatch: null
 jobs:
   send_email:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
       - name: Set up nodejs
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
-
+          node-version: "14"
       - name: Install Dependencies
         run: npm install nodemailer
-
       - name: Send Email
-	run: node .github/scripts/send-email.mjs
+        run: node .github/scripts/send-email.mjs
         env:
           SMTP_USERNAME: sumamegur@gmail.com
           SMTP_PASSWORD: ${{ secrets.EMAIL_PASSKEY }}
           RECIPIENT_EMAIL: sumamegur@gmail.com,sumabhat993@gmail.com
-          EMAIL_SUBJECT: "GitHub Action Email - NNTO from nodejs"
+          EMAIL_SUBJECT: GitHub Action Email - NNTO from nodejs
