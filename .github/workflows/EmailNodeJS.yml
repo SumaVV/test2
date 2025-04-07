@@ -1,8 +1,8 @@
-name: Send Emmail using NOdeJS
+name: Send Emmail using NodeJS
 
 on:
   Push:
-  workflow_dispatch: # Allows manual triggering from the GitHub Actions UI
+  workflow_dispatch: 
 
 jobs:
   send_email:
@@ -25,4 +25,4 @@ jobs:
           SMTP_USERNAME: sumamegur@gmail.com
           SMTP_PASSWORD: ${{ secrets.EMAIL_PASSKEY }}
           RECIPIENT_EMAIL: sumamegur@gmail.com,sumabhat993@gmail.com
-          EMAIL_SUBJECT: "GitHub Action Email - NNTO"
+          EMAIL_SUBJECT: "GitHub Action Email - NNTO from nodejs"
