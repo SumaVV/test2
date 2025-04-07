@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
@@ -27,7 +27,7 @@ jobs:
           SMTP_PORT: 587 # Or your SMTP port
           SMTP_USERNAME: sumamegur@gmail.com
           SMTP_PASSWORD: ${{ secrets.EMAIL_PASSKEY }}
-          RECIPIENT_EMAIL: sumamegur@gmail.com,sumabhat993@gmail.com
+          RECIPIENT_EMAILS: "sumabhat993@gmail.com, sumamegur@gmail.com"
           SENDER_EMAIL: sumamegur@gmail.com
           EMAIL_SUBJECT: "GitHub Action Email"
           EMAIL_BODY: "This email was sent from a GitHub Action without using the dawidd6 action."
@@ -42,14 +42,14 @@ jobs:
           smtp_port = ${{ env.SMTP_PORT }}
           smtp_username = "${{ env.SMTP_USERNAME }}"
           smtp_password = "${{ env.SMTP_PASSWORD }}"
-          recipient_email = "${{ env.RECIPIENT_EMAIL }}"
+          recipient_emails = "${{ env.RECIPIENT_EMAILS }}".split(",")
           sender_email = "${{ env.SENDER_EMAIL }}"
           email_subject = "${{ env.EMAIL_SUBJECT }}"
           email_body = "${{ env.EMAIL_BODY }}"
 
           msg = MIMEMultipart()
           msg['From'] = sender_email
-          msg['To'] = recipient_email
+          msg['To'] = ", ".join(recipient_emails)
           msg['Subject'] = email_subject
 
           msg.attach(MIMEText(email_body, 'plain'))
@@ -59,7 +59,7 @@ jobs:
               server.starttls()  # Secure the connection
               server.login(smtp_username, smtp_password)
               text = msg.as_string()
-              server.sendmail(sender_email, recipient_email, text)
+              server.sendmail(sender_email, recipient_emails, text) #Send to all recipients in the list.
               server.quit()
               print("Email sent successfully!")
           except Exception as e:
